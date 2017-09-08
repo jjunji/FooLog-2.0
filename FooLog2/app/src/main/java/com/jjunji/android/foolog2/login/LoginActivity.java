@@ -1,4 +1,4 @@
-package com.jjunji.android.foolog2;
+package com.jjunji.android.foolog2.login;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.jjunji.android.foolog2.MainActivity;
+import com.jjunji.android.foolog2.R;
+import com.jjunji.android.foolog2.SignUpActivity;
+import com.jjunji.android.foolog2.Util.NetworkService;
 import com.jjunji.android.foolog2.model.Login;
 import com.jjunji.android.foolog2.model.LoginResult;
 
@@ -116,7 +120,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         // 실제 서비스 인터페이스 생성.
-        iService service = retrofit.create(iService.class);
+        NetworkService service = retrofit.create(NetworkService.class);
         // 서비스 호출
         Call<LoginResult> call = service.createLogin(login);  // 응답 body는 LoginResult.class를 이용.
         call.enqueue(new Callback<LoginResult>() {
@@ -132,7 +136,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     pk = loginResult.user.pk;
                     Log.e("LoginActivity", "token =====================" +token);
                     Log.e("LoginActivity", "pk=========================" + pk);
-                    Toast.makeText(getBaseContext(),"Success", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(),"로그인", Toast.LENGTH_SHORT).show();
 
                     setStorage();
 

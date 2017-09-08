@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.jjunji.android.foolog2.login.LoginActivity;
+
 public class SplashActivity extends AppCompatActivity {
 
     @Override
