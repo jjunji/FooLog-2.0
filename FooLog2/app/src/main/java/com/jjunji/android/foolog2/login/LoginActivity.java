@@ -15,6 +15,7 @@ import com.jjunji.android.foolog2.MainActivity;
 import com.jjunji.android.foolog2.R;
 import com.jjunji.android.foolog2.SignUpActivity;
 import com.jjunji.android.foolog2.Util.NetworkService;
+import com.jjunji.android.foolog2.Util.SharedPreferencesDb;
 import com.jjunji.android.foolog2.model.Login;
 import com.jjunji.android.foolog2.model.LoginResult;
 
@@ -38,7 +39,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Intent intent;
     static String token; // 가입 시 생성되는 token 저장
     private int pk;
-    private String loginId, loginPwd;  // SharedPreferences 사용을 위한 id, pwd 선언
+    //String loginId, loginPwd;  // SharedPreferences 사용을 위한 id, pwd 선언
     private Login login;
     private String email, nickName;
 /*    static SharedPreferences storage;
@@ -50,7 +51,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         init();
-        setSharedPreferences(); // SharedPreferences 정의
+        //setSharedPreferences(); // SharedPreferences 정의
         checkStorage();  // 저장된 키 값이 있는지 확인
         setOnClickListener(); // 버튼 클릭 이벤트 설정
     }
@@ -67,18 +68,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnSignUp.setOnClickListener(this);
     }
 
-    private void setSharedPreferences(){
-        SharedPreferences storage = getSharedPreferences("storage", Activity.MODE_PRIVATE);
+/*    private void checkLoginDb(){
+
+        //SharedPreferences storage = getSharedPreferences("storage", Activity.MODE_PRIVATE);
         // 처음에는 SharedPreferences에 아무런 정보도 없으므로 값을 저장할 default 키를 생성한다.
         // getString 의 첫번째 인자는 저장될 키, 두번째 인자는 값.
-        loginId = storage.getString("inputId",null);
-        loginPwd = storage.getString("inputPwd",null);
-    }
+        *//*loginId = storage.getString("inputId",null);
+        loginPwd = storage.getString("inputPwd",null);*//*
+
+        loginId = SharedPreferencesDb.getId(this, loginId);
+        loginPwd = SharedPreferencesDb.getPwd(this, loginPwd);
+
+    }*/
 
     // 저장된 키 값이 있다면 자동 로그인
     private void checkStorage() {
-        if(loginId != null && loginPwd != null) {
-            Toast.makeText(LoginActivity.this, loginId +"님 자동로그인 입니다.", Toast.LENGTH_SHORT).show();
+        if(SharedPreferencesDb.getId(this, "loginId") != null && SharedPreferencesDb.getPwd(this, "loginPwd") != null) {
+            String id = SharedPreferencesDb.getId(this, "loginId");
+            Toast.makeText(LoginActivity.this, id +"님 자동로그인 입니다.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -87,19 +94,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     // 저장된 키 값이 없다면 로그인 정보 저장
     private void setStorage(){
-        if(loginId == null && loginPwd == null) {
-            SharedPreferences storage = getSharedPreferences("storage", Activity.MODE_PRIVATE);
-            SharedPreferences.Editor autoLogin = storage.edit();
+        if(SharedPreferencesDb.getId(this, "loginId") == null && SharedPreferencesDb.getPwd(this, "loginPwd") == null){
+            SharedPreferencesDb.setId(this, "loginId", txtEmail.getText().toString());  // email 저장.
+            SharedPreferencesDb.setPwd(this, "loginPwd", txtPassword.getText().toString()); // 비밀번호 저장.
+            SharedPreferencesDb.setToken(this, "token", token); // 토큰 저장.
+            SharedPreferencesDb.setToken(this, "nickName", nickName);
 
-            autoLogin.putString("inputEmail",email);
-            autoLogin.putString("inputNickName",nickName);
-            //autoLogin.putInt("inputPk",pk); // user pk 값 저장. -> Navi 프로필.
-            autoLogin.putString("inputToken",token);  // 토큰 저장.
-            autoLogin.putString("inputId", txtEmail.getText().toString()); // email 저장.
-            autoLogin.putString("inputPwd", txtPassword.getText().toString()); // 비밀번호 저장.
-
-            // commit() : 저장
-            autoLogin.commit();
         }
     }
 
