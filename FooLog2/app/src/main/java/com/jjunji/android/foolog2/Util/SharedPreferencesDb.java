@@ -13,7 +13,9 @@ public class SharedPreferencesDb {
     private static SharedPreferences storage = null;
 
     private static void setSharedPreferences(Context context){
-        storage = context.getSharedPreferences("storage", Activity.MODE_PRIVATE);
+        if(storage == null){
+            storage = context.getSharedPreferences("storage", Activity.MODE_PRIVATE);
+        }
     }
 
     private static void setString(Context context, String key, String value){
@@ -25,7 +27,7 @@ public class SharedPreferencesDb {
 
     private static String getString(Context context, String key){
         setSharedPreferences(context);
-        return storage.getString(key, "해당 데이터 없음");
+        return storage.getString(key, null);
     }
 
     // 저장소에서 Id를 가져온다.
@@ -56,6 +58,11 @@ public class SharedPreferencesDb {
         return getString(context, key);
     }
 
+    public static String sendToken(Context context, String key){
+
+        return "Token " + getString(context, key);
+    }
+
     public static void setToken(Context context, String key, String value){
         setString(context, key, value);
     }
@@ -67,6 +74,12 @@ public class SharedPreferencesDb {
 
     public static void setNickName(Context context, String key, String value){
         setString(context, key, value);
+    }
+
+    public static void DbClear(){
+        SharedPreferences.Editor editor = storage.edit();
+        editor.clear();
+        editor.commit();
     }
 
 }

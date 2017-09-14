@@ -6,4 +6,12 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <string name="navi_map">지도 마커 통계보기</string>
+    <string name="navi_graph">그래프 통계보기</string>
+    <string name="navi_circle_graph">원형그래프 통계보기</string>
+    <string name="navi_statistics">통계</string>
+    <string name="navi_etc">기타</string>
+
+
 </resources>

@@ -100,3 +100,10 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 }
+
+
+// TODO: 2017-09-14
+/*
+EditText의 getText() 함수는 String 클래스 타입을 리턴하지 않고, Editable 인터페이스 타입을 리턴한다.
+그래서 String 타입으로 텍스트를 사용하고자 한다면, Editable 인터페이스가 제공하는 toString() 함수를 호출하여 String 타입으로 변환해야 하는 것.
+ */

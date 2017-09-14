@@ -1,11 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.jjunji.android.foolog2.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"></android.support.v4.view.ViewPager>
+
+    <me.huseyinozer.TooltipIndicator
+        android:id="@+id/tooltip_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+
+        app:ti_lineWidth="24dp"
+        app:ti_lineWidthSelected="80dp"
+        app:ti_lineHeight="6dp"
+
+        app:ti_lineMargin="4dp"
+
+        app:ti_selectedLineDrawable="@drawable/tooltip_indicator_rounded_line_selected"
+        app:ti_unselectedLineDrawable="@drawable/tooltip_indicator_rounded_line_unselected"
+
+        app:ti_tooltipWidth="100dp"
+        app:ti_tooltipHeight="180dp" />
+
+</LinearLayout>

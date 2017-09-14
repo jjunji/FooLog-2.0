@@ -44,6 +44,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String email, nickName;
 /*    static SharedPreferences storage;
     static SharedPreferences.Editor autoLogin;*/
+    private String loginId, loginPwd;  // SharedPreferences 사용을 위한 id, pwd 선언
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,18 +69,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnSignUp.setOnClickListener(this);
     }
 
-/*    private void checkLoginDb(){
-
+    private void setSharedPreferences(){
         //SharedPreferences storage = getSharedPreferences("storage", Activity.MODE_PRIVATE);
         // 처음에는 SharedPreferences에 아무런 정보도 없으므로 값을 저장할 default 키를 생성한다.
         // getString 의 첫번째 인자는 저장될 키, 두번째 인자는 값.
-        *//*loginId = storage.getString("inputId",null);
-        loginPwd = storage.getString("inputPwd",null);*//*
-
-        loginId = SharedPreferencesDb.getId(this, loginId);
-        loginPwd = SharedPreferencesDb.getPwd(this, loginPwd);
-
-    }*/
+        loginId = SharedPreferencesDb.getId(this, null);
+        loginPwd = SharedPreferencesDb.getPwd(this, null);
+/*        loginId = storage.getString("inputId",null);
+        loginPwd = storage.getString("inputPwd",null);*/
+    }
 
     // 저장된 키 값이 있다면 자동 로그인
     private void checkStorage() {
@@ -99,7 +97,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             SharedPreferencesDb.setPwd(this, "loginPwd", txtPassword.getText().toString()); // 비밀번호 저장.
             SharedPreferencesDb.setToken(this, "token", token); // 토큰 저장.
             SharedPreferencesDb.setToken(this, "nickName", nickName);
-
         }
     }
 
