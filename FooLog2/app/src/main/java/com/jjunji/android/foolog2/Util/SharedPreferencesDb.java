@@ -1,4 +1,4 @@
-package com.jjunji.android.foolog2.Util;
+package com.jjunji.android.foolog2.util;
 
 import android.app.Activity;
 import android.content.Context;

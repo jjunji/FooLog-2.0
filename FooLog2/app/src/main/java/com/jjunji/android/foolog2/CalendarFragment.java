@@ -1,10 +1,8 @@
 package com.jjunji.android.foolog2;
 
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.icu.util.Calendar;
 import android.os.Build;
@@ -24,8 +22,10 @@ import android.widget.Toast;
 import com.jjunji.android.foolog2.Calendar.CalendarAdapter;
 import com.jjunji.android.foolog2.Dialog.CustomDialog;
 import com.jjunji.android.foolog2.Dialog.CustomRecyclerViewAdapter;
-import com.jjunji.android.foolog2.Util.NetworkService;
-import com.jjunji.android.foolog2.Util.SharedPreferencesDb;
+import com.jjunji.android.foolog2.util.ITask;
+import com.jjunji.android.foolog2.util.Loader;
+import com.jjunji.android.foolog2.util.NetworkService;
+import com.jjunji.android.foolog2.util.SharedPreferencesDb;
 import com.jjunji.android.foolog2.model.DayList;
 import com.jjunji.android.foolog2.model.TagList;
 
@@ -41,14 +41,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
-
 
 /**
  * A simple {@link Fragment} subclass.
  */
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class CalendarFragment extends Fragment implements CustomRecyclerViewAdapter.RefreshCallback{
+public class CalendarFragment extends Fragment implements CustomRecyclerViewAdapter.RefreshCallback, ITask.createDialog{
 
     TextView txtMonth;
     GridView monthView;
@@ -57,14 +55,10 @@ public class CalendarFragment extends Fragment implements CustomRecyclerViewAdap
     Typeface font;
     Context context;
     CustomDialog customDialog;
-    //String send_token;  // 통신에 필요한 헤더 값 (토큰)
-    //SharedPreferences storage;
-    //String shared_token;
     Button btnPrevious, btnNext;
     Calendar calendar;
     ArrayList<String> dayList = new ArrayList<String>();
     ArrayList<String> dateList = new ArrayList<>(); // 포지션 값에 매칭되는 날짜를 저장하는 list(20170810)
-    //RefreshCallback refreshCallback;
 
     int lastDay; // 마지막 날
     int curYear; // 현재 년도
@@ -107,13 +101,6 @@ public class CalendarFragment extends Fragment implements CustomRecyclerViewAdap
     }
 
     private void initView() {
-       // storage = context.getSharedPreferences("storage", Activity.MODE_PRIVATE);
-       // shared_token = storage.getString("inputToken", " ");
-       // send_token = "Token " + shared_token;
-
-       // Log.d(TAG,"send_token"+send_token);
-       // Log.d(TAG,"shared_token"+shared_token);
-
         font = Typeface.createFromAsset(getActivity().getAssets(), "yaFontBold.ttf");
 
         btnPrevious = (Button) view.findViewById(R.id.btnPrevious);
@@ -123,7 +110,6 @@ public class CalendarFragment extends Fragment implements CustomRecyclerViewAdap
 
         monthView = (GridView) view.findViewById(R.id.monthView);
         monthView.setAdapter(adapter); // 그리드뷰(달력) 와 어댑터 연결 (안하면 뷰가 안보임)
-
     }
 
     private void initDate() {
@@ -150,7 +136,6 @@ public class CalendarFragment extends Fragment implements CustomRecyclerViewAdap
                 setNextMonth();
                 setTxtMonth();
                 setNetwork(start, end);
-
             }
         });
     }
@@ -162,11 +147,12 @@ public class CalendarFragment extends Fragment implements CustomRecyclerViewAdap
     }
 
     // 달력의 한 아이템(날짜) 뷰 클릭시 이벤트 정의
-    private void setMonthViewClickListener() {
+    private void setMonthViewClickListener(){
         monthView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                setNetwork(getDateList(position));
+                //setNetwork(getDateList(position));
+                Loader.setDialogNetwork(getDateList(position), send_token, CalendarFragment.this);
             }
         });
     }
@@ -218,7 +204,6 @@ public class CalendarFragment extends Fragment implements CustomRecyclerViewAdap
     }
 
     private void resetDayNumbers2() {
-
         dayList.clear();
         dateList.clear();
 
@@ -350,6 +335,7 @@ public class CalendarFragment extends Fragment implements CustomRecyclerViewAdap
         });
     }
 
+
     // day 날짜 클릭시 넘어온 해당 날짜의 정보 YYYYMMDD -> Get Day list 에 전송하는 값
     private void setNetwork(String day) {
         Call<List<DayList>> call = service.createDayList(day, send_token);
@@ -383,5 +369,11 @@ public class CalendarFragment extends Fragment implements CustomRecyclerViewAdap
     @Override
     public void refresh() {
         this.setNetwork(start,end);
+    }
+
+    @Override
+    public void showDialog(List<DayList> dayListBody) {
+        customDialog = new CustomDialog(context, dayListBody, send_token, CalendarFragment.this);
+        customDialog.show();
     }
 }

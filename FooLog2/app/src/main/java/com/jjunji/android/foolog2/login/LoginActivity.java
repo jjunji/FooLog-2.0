@@ -1,8 +1,6 @@
 package com.jjunji.android.foolog2.login;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,8 +12,8 @@ import android.widget.Toast;
 import com.jjunji.android.foolog2.MainActivity;
 import com.jjunji.android.foolog2.R;
 import com.jjunji.android.foolog2.SignUpActivity;
-import com.jjunji.android.foolog2.Util.NetworkService;
-import com.jjunji.android.foolog2.Util.SharedPreferencesDb;
+import com.jjunji.android.foolog2.util.NetworkService;
+import com.jjunji.android.foolog2.util.SharedPreferencesDb;
 import com.jjunji.android.foolog2.model.Login;
 import com.jjunji.android.foolog2.model.LoginResult;
 

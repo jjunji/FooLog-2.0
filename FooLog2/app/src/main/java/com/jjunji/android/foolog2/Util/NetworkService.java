@@ -1,4 +1,4 @@
-package com.jjunji.android.foolog2.Util;
+package com.jjunji.android.foolog2.util;
 
 
 import com.jjunji.android.foolog2.model.AllList;
@@ -27,8 +27,6 @@ import retrofit2.http.Query;
  */
 
 public interface NetworkService {
-
-    public static final String BASE_URL = "http://api.foolog.xyz/";
 
     @POST("member/")
     Call<Join> createUser(@Body Join join);

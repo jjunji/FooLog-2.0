@@ -1,14 +1,11 @@
 package com.jjunji.android.foolog2;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -24,7 +21,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jjunji.android.foolog2.Util.SharedPreferencesDb;
+import com.jjunji.android.foolog2.util.SharedPreferencesDb;
 import com.jjunji.android.foolog2.login.LoginActivity;
 
 import me.huseyinozer.TooltipIndicator;

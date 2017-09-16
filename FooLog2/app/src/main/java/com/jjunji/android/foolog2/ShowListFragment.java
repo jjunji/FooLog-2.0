@@ -1,9 +1,7 @@
 package com.jjunji.android.foolog2;
 
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,8 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.jjunji.android.foolog2.Util.NetworkService;
-import com.jjunji.android.foolog2.Util.SharedPreferencesDb;
+import com.jjunji.android.foolog2.util.NetworkService;
+import com.jjunji.android.foolog2.util.SharedPreferencesDb;
 import com.jjunji.android.foolog2.model.AllList;
 
 import java.util.List;

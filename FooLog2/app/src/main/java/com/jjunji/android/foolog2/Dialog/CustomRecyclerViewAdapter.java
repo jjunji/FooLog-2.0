@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.jjunji.android.foolog2.R;
-import com.jjunji.android.foolog2.Util.NetworkService;
+import com.jjunji.android.foolog2.util.NetworkService;
 import com.jjunji.android.foolog2.model.DayList;
 import com.jjunji.android.foolog2.model.Delete;
 

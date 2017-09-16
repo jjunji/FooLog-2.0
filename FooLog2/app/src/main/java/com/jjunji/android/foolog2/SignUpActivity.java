@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.jjunji.android.foolog2.Util.NetworkService;
+import com.jjunji.android.foolog2.util.NetworkService;
 import com.jjunji.android.foolog2.model.Join;
 
 import retrofit2.Call;
