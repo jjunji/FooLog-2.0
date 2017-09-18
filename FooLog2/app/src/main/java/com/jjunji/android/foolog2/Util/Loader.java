@@ -34,6 +34,7 @@ public class Loader {
     public static final String BASE_URL = "http://api.foolog.xyz/";
     static HttpLoggingInterceptor logging;
     static OkHttpClient client;
+    static NetworkService service;
 
     public static void logInterceptor(){
         // okhttp log interceptor 사용
@@ -42,10 +43,7 @@ public class Loader {
         client = new OkHttpClient.Builder().addInterceptor(logging).build();
     }
 
-    // day 날짜 클릭시 넘어온 해당 날짜의 정보 YYYYMMDD -> Get Day list 에 전송하는 값
-    public static void setDialogNetwork(String day, String send_token, final ITask.createDialog createDialog){
-        logInterceptor();
-
+    public static void initNetwork(){
         // 레트로핏 객체 정의
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -53,7 +51,14 @@ public class Loader {
                 .client(client)
                 .build();
 
-        NetworkService service = retrofit.create(NetworkService.class);
+        service = retrofit.create(NetworkService.class);
+    }
+
+    // day 날짜 클릭시 넘어온 해당 날짜의 정보 YYYYMMDD -> Get Day list 에 전송하는 값
+    public static void setDialogNetwork(String day, String send_token, final ITask.createDialog createDialog){
+        logInterceptor();
+        initNetwork();
+
         Call<List<DayList>> call = service.createDayList(day, send_token);
         call.enqueue(new Callback<List<DayList>>() {
             @Override
@@ -85,26 +90,16 @@ public class Loader {
         settingAdapter.showProgress();
 
         logInterceptor();
+        initNetwork();
 
-        // 레트로핏 객체 정의
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
-
-        // 서비스 호출
-        NetworkService service = retrofit.create(NetworkService.class);
         Call<List<TagList>> call = service.createTagList(send_token, start, end);
 
         call.enqueue(new Callback<List<TagList>>() {
             @Override
             public void onResponse(Call<List<TagList>> call, Response<List<TagList>> response) {
-              //  progressDialog.dismiss();
                 settingAdapter.disProgress();
                 List<TagList> tagList = response.body();
                 settingAdapter.setAdapter(tagList);
-                //adapter.notifyDataSetChanged();
             }
 
             @Override
