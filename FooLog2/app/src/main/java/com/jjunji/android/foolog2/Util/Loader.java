@@ -1,12 +1,17 @@
 package com.jjunji.android.foolog2.util;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.jjunji.android.foolog2.Calendar.CalendarAdapter;
 import com.jjunji.android.foolog2.CalendarFragment;
 import com.jjunji.android.foolog2.Dialog.CustomDialog;
 import com.jjunji.android.foolog2.model.DayList;
+import com.jjunji.android.foolog2.model.TagList;
 import com.jjunji.android.foolog2.util.ITask.createDialog;
 
 import java.util.List;
@@ -72,6 +77,39 @@ public class Loader {
             @Override
             public void onFailure(Call<List<DayList>> call, Throwable t) {
                 Log.e("MyTag", "error===========" + t.getMessage());
+            }
+        });
+    }
+
+    public static void setTagNetwork(String start, String end, String send_token, final ITask.settingAdapter settingAdapter){
+        settingAdapter.showProgress();
+
+        logInterceptor();
+
+        // 레트로핏 객체 정의
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+
+        // 서비스 호출
+        NetworkService service = retrofit.create(NetworkService.class);
+        Call<List<TagList>> call = service.createTagList(send_token, start, end);
+
+        call.enqueue(new Callback<List<TagList>>() {
+            @Override
+            public void onResponse(Call<List<TagList>> call, Response<List<TagList>> response) {
+              //  progressDialog.dismiss();
+                settingAdapter.disProgress();
+                List<TagList> tagList = response.body();
+                settingAdapter.setAdapter(tagList);
+                //adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<List<TagList>> call, Throwable t) {
+                Log.e("CalendarFragment", "error===============" + t.getMessage());
             }
         });
     }

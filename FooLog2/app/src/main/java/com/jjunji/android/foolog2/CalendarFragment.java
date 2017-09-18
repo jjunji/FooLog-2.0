@@ -46,7 +46,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * A simple {@link Fragment} subclass.
  */
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class CalendarFragment extends Fragment implements CustomRecyclerViewAdapter.RefreshCallback, ITask.createDialog{
+public class CalendarFragment extends Fragment implements CustomRecyclerViewAdapter.RefreshCallback, ITask.createDialog, ITask.settingAdapter {
 
     TextView txtMonth;
     GridView monthView;
@@ -93,7 +93,8 @@ public class CalendarFragment extends Fragment implements CustomRecyclerViewAdap
         initDate();
         setNowMonth();
         setTxtMonth();
-        setNetwork(start, end);
+        //setNetwork(start, end);
+        Loader.setTagNetwork(start, end, send_token, CalendarFragment.this);
         setMonthViewClickListener();  // 그리드뷰의 한 아이템 클릭시 이벤트 정의
         setButton();  // 전 달, 다음 달 이동 버튼 정의
 
@@ -126,7 +127,8 @@ public class CalendarFragment extends Fragment implements CustomRecyclerViewAdap
             public void onClick(View view) {
                 setPreviousMonth();
                 setTxtMonth();
-                setNetwork(start, end);
+                //setNetwork(start, end);
+                Loader.setTagNetwork(start, end, send_token, CalendarFragment.this);
             }
         });
 
@@ -135,7 +137,8 @@ public class CalendarFragment extends Fragment implements CustomRecyclerViewAdap
             public void onClick(View view) {
                 setNextMonth();
                 setTxtMonth();
-                setNetwork(start, end);
+                //setNetwork(start, end);
+                Loader.setTagNetwork(start, end, send_token, CalendarFragment.this);
             }
         });
     }
@@ -368,7 +371,8 @@ public class CalendarFragment extends Fragment implements CustomRecyclerViewAdap
 
     @Override
     public void refresh() {
-        this.setNetwork(start,end);
+        //this.setNetwork(start,end);
+        Loader.setTagNetwork(start, end, send_token, CalendarFragment.this);
     }
 
     @Override
@@ -381,4 +385,25 @@ public class CalendarFragment extends Fragment implements CustomRecyclerViewAdap
     public void noDialog(List<DayList> dayListBody) {
         Toast.makeText(context, "Nothing", Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void setAdapter(List<TagList> tagList) {
+        adapter = new CalendarAdapter(context, dayList, curMonth, tagList, dayOfWeek);
+        monthView.setAdapter(adapter);
+    }
+
+
+    ProgressDialog progressDialog = null;
+    @Override
+    public void showProgress() {
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("데이터를 불러오는 중입니다.");
+        progressDialog.show();
+    }
+
+    @Override
+    public void disProgress() {
+        progressDialog.dismiss();
+    }
+
 }
