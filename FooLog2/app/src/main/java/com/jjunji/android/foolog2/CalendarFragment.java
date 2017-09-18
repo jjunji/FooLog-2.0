@@ -88,7 +88,7 @@ public class CalendarFragment extends Fragment implements CustomRecyclerViewAdap
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_calendar, container, false);
         Log.i("CalendarFragment", "===================CalendarFragment" + "Start");
-        initNetwork();
+        //initNetwork();
         initView();
         initDate();
         setNowMonth();
@@ -373,7 +373,12 @@ public class CalendarFragment extends Fragment implements CustomRecyclerViewAdap
 
     @Override
     public void showDialog(List<DayList> dayListBody) {
-        customDialog = new CustomDialog(context, dayListBody, send_token, CalendarFragment.this);
-        customDialog.show();
+        this.customDialog = new CustomDialog(context, dayListBody, send_token, CalendarFragment.this);
+        this.customDialog.show();
+    }
+
+    @Override
+    public void noDialog(List<DayList> dayListBody) {
+        Toast.makeText(context, "Nothing", Toast.LENGTH_SHORT).show();
     }
 }

@@ -12,6 +12,7 @@ public interface ITask {
 
     public interface createDialog{
         public void showDialog(List<DayList> dayListBody);
+        public void noDialog(List<DayList> dayListBody);
     }
 
 

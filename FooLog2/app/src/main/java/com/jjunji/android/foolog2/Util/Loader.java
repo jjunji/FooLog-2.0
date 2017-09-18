@@ -35,11 +35,12 @@ public class Loader {
         logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         client = new OkHttpClient.Builder().addInterceptor(logging).build();
-
     }
 
     // day 날짜 클릭시 넘어온 해당 날짜의 정보 YYYYMMDD -> Get Day list 에 전송하는 값
     public static void setDialogNetwork(String day, String send_token, final ITask.createDialog createDialog){
+        logInterceptor();
+
         // 레트로핏 객체 정의
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -59,7 +60,7 @@ public class Loader {
                     if (dayListBody.size() != 0) {
                         createDialog.showDialog(dayListBody);
                     } else {
-                       Toast.makeText((Context) createDialog, "Nothing", Toast.LENGTH_SHORT).show();
+                       createDialog.noDialog(dayListBody);
                     }
 
                 } else {
