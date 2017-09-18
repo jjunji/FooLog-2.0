@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import com.jjunji.android.foolog2.MainActivity;
 import com.jjunji.android.foolog2.R;
-import com.jjunji.android.foolog2.SignUpActivity;
 import com.jjunji.android.foolog2.util.NetworkService;
 import com.jjunji.android.foolog2.util.SharedPreferencesDb;
 import com.jjunji.android.foolog2.model.Login;
@@ -37,12 +36,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Intent intent;
     static String token; // 가입 시 생성되는 token 저장
     private int pk;
-    //String loginId, loginPwd;  // SharedPreferences 사용을 위한 id, pwd 선언
     private Login login;
     private String email, nickName;
-/*    static SharedPreferences storage;
-    static SharedPreferences.Editor autoLogin;*/
-    private String loginId, loginPwd;  // SharedPreferences 사용을 위한 id, pwd 선언
+   // private String loginId, loginPwd;  // SharedPreferences 사용을 위한 id, pwd 선언
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,15 +63,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnSignUp.setOnClickListener(this);
     }
 
-    private void setSharedPreferences(){
+/*    private void setSharedPreferences(){
         //SharedPreferences storage = getSharedPreferences("storage", Activity.MODE_PRIVATE);
         // 처음에는 SharedPreferences에 아무런 정보도 없으므로 값을 저장할 default 키를 생성한다.
         // getString 의 첫번째 인자는 저장될 키, 두번째 인자는 값.
         loginId = SharedPreferencesDb.getId(this, null);
         loginPwd = SharedPreferencesDb.getPwd(this, null);
-/*        loginId = storage.getString("inputId",null);
-        loginPwd = storage.getString("inputPwd",null);*/
-    }
+    }*/
 
     // 저장된 키 값이 있다면 자동 로그인
     private void checkStorage() {

@@ -155,11 +155,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_logout) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
- /*           SharedPreferences storage = getSharedPreferences("storage", Activity.MODE_PRIVATE);
-            SharedPreferences.Editor editor = storage.edit();*/
-            //editor.clear()는 storage 에 들어있는 모든 정보를 기기에서 지움
-/*            editor.clear();
-            editor.commit();*/
             SharedPreferencesDb.DbClear();
             Toast.makeText(MainActivity.this, "로그아웃.", Toast.LENGTH_SHORT).show();
             finish();

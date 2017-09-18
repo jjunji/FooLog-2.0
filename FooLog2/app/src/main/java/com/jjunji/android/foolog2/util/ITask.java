@@ -3,6 +3,7 @@ package com.jjunji.android.foolog2.util;
 import android.app.ProgressDialog;
 import android.widget.ProgressBar;
 
+import com.jjunji.android.foolog2.model.AllList;
 import com.jjunji.android.foolog2.model.DayList;
 import com.jjunji.android.foolog2.model.TagList;
 
@@ -24,6 +25,10 @@ public interface ITask {
         //public void showProgress(ProgressDialog progressDialog);
         public void showProgress();
         public void disProgress();
+    }
+
+    public interface createAllFoolog{
+        public void showAllList(List<AllList> allLists);
     }
 
 }

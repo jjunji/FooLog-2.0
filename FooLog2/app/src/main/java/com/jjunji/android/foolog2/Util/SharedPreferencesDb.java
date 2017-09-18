@@ -78,7 +78,7 @@ public class SharedPreferencesDb {
 
     public static void DbClear(){
         SharedPreferences.Editor editor = storage.edit();
-        editor.clear();
+        editor.clear();  // editor.clear()는 storage 에 들어있는 모든 정보를 기기에서 지움
         editor.commit();
     }
 

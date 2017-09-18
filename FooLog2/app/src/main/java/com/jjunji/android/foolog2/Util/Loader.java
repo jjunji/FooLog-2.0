@@ -4,12 +4,15 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.jjunji.android.foolog2.Calendar.CalendarAdapter;
 import com.jjunji.android.foolog2.CalendarFragment;
 import com.jjunji.android.foolog2.Dialog.CustomDialog;
+import com.jjunji.android.foolog2.ListRecyclerViewAdapter;
+import com.jjunji.android.foolog2.model.AllList;
 import com.jjunji.android.foolog2.model.DayList;
 import com.jjunji.android.foolog2.model.TagList;
 import com.jjunji.android.foolog2.util.ITask.createDialog;
@@ -86,6 +89,7 @@ public class Loader {
         });
     }
 
+    // 인자로 토큰, start,end -> 날짜 범위(start ~ end) 에 작성한 글에 포함된 항목별 태그 개수
     public static void setTagNetwork(String start, String end, String send_token, final ITask.settingAdapter settingAdapter){
         settingAdapter.showProgress();
 
@@ -109,5 +113,29 @@ public class Loader {
         });
     }
 
+    // 인자로 day(특정 한 날짜) -> 선택한 날짜에 해당하는 post Data
+    public static void allFoologNetwork(String send_token, final ITask.createAllFoolog createAllFoolog){
+        Call<List<AllList>> call = service.getAllList(send_token);
+        call.enqueue(new Callback<List<AllList>>() {
+            @Override
+            public void onResponse(Call<List<AllList>> call, Response<List<AllList>> response) {
+                // 전송결과가 정상이면
+                Log.e("Write","in ====== onResponse");
+                if(response.isSuccessful()){
+                    List<AllList> allLists = response.body();
+                    createAllFoolog.showAllList(allLists);
+
+                }else{
+                    int statusCode = response.code();
+                    Log.i("ShowListFragment", "응답코드 ============= " + statusCode);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<AllList>> call, Throwable t) {
+                Log.e("MyTag","error==========="+t.getMessage());
+            }
+        });
+    }
 
 }

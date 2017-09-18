@@ -93,7 +93,6 @@ public class CalendarFragment extends Fragment implements CustomRecyclerViewAdap
         initDate();
         setNowMonth();
         setTxtMonth();
-        //setNetwork(start, end);
         Loader.setTagNetwork(start, end, send_token, CalendarFragment.this);
         setMonthViewClickListener();  // 그리드뷰의 한 아이템 클릭시 이벤트 정의
         setButton();  // 전 달, 다음 달 이동 버튼 정의
@@ -127,7 +126,6 @@ public class CalendarFragment extends Fragment implements CustomRecyclerViewAdap
             public void onClick(View view) {
                 setPreviousMonth();
                 setTxtMonth();
-                //setNetwork(start, end);
                 Loader.setTagNetwork(start, end, send_token, CalendarFragment.this);
             }
         });
@@ -137,7 +135,6 @@ public class CalendarFragment extends Fragment implements CustomRecyclerViewAdap
             public void onClick(View view) {
                 setNextMonth();
                 setTxtMonth();
-                //setNetwork(start, end);
                 Loader.setTagNetwork(start, end, send_token, CalendarFragment.this);
             }
         });
@@ -290,88 +287,8 @@ public class CalendarFragment extends Fragment implements CustomRecyclerViewAdap
         }
     }
 
-
-    private void initNetwork() {
-        // okhttp log interceptor 사용
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(logging).build();
-
-        // 레트로핏 객체 정의
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://api.foolog.xyz/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
-
-        service = retrofit.create(NetworkService.class);
-    }
-
-    /* setNetwork 오버로딩
-       1. 인자로 토큰, start,end -> 날짜 범위(start ~ end) 에 작성한 글에 포함된 항목별 태그 개수
-       2. 인자로 day(특정 한 날짜) -> 선택한 날짜에 해당하는 post Data
-    */
-    private void setNetwork(String start, String end) {
-
-        final ProgressDialog progressDialog;
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("데이터를 불러오는 중입니다.");
-        progressDialog.show();
-
-        // 서비스 호출
-        Call<List<TagList>> call = service.createTagList(send_token, start, end);
-
-        call.enqueue(new Callback<List<TagList>>() {
-            @Override
-            public void onResponse(Call<List<TagList>> call, Response<List<TagList>> response) {
-                progressDialog.dismiss();
-                List<TagList> tagList = response.body();
-                adapter = new CalendarAdapter(context, dayList, curMonth, tagList, dayOfWeek);
-                monthView.setAdapter(adapter);
-                //adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<List<TagList>> call, Throwable t) {
-                Log.e("CalendarFragment", "error===============" + t.getMessage());
-            }
-        });
-    }
-
-
-    // day 날짜 클릭시 넘어온 해당 날짜의 정보 YYYYMMDD -> Get Day list 에 전송하는 값
-    private void setNetwork(String day) {
-        Call<List<DayList>> call = service.createDayList(day, send_token);
-        call.enqueue(new Callback<List<DayList>>() {
-            @Override
-            public void onResponse(Call<List<DayList>> call, Response<List<DayList>> response) {
-                // 전송결과가 정상이면
-                Log.e("Write", "in ====== onResponse");
-                if (response.isSuccessful()) {
-                    List<DayList> dayListBody = response.body();
-                    if (dayListBody.size() != 0) {
-                        customDialog = new CustomDialog(context, dayListBody, send_token, CalendarFragment.this);
-                        customDialog.show();
-                    } else {
-                        Toast.makeText(context, "Nothing", Toast.LENGTH_SHORT).show();
-                    }
-
-                } else {
-                    int statusCode = response.code();
-                    Log.i("CalendarFragment", "응답코드 ============= " + statusCode);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<DayList>> call, Throwable t) {
-                Log.e("MyTag", "error===========" + t.getMessage());
-            }
-        });
-    }
-
     @Override
     public void refresh() {
-        //this.setNetwork(start,end);
         Loader.setTagNetwork(start, end, send_token, CalendarFragment.this);
     }
 

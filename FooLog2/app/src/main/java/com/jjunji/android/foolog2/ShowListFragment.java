@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jjunji.android.foolog2.util.ITask;
+import com.jjunji.android.foolog2.util.Loader;
 import com.jjunji.android.foolog2.util.NetworkService;
 import com.jjunji.android.foolog2.util.SharedPreferencesDb;
 import com.jjunji.android.foolog2.model.AllList;
@@ -30,16 +32,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ShowListFragment extends Fragment {
+public class ShowListFragment extends Fragment implements ITask.createAllFoolog{
     View view;
     Context context;
     RecyclerView recyclerView;
     String send_token;
-    //SharedPreferences storage;
-    //String shared_token;
     Typeface font;
     ListRecyclerViewAdapter adapter;
-    NetworkService service = null;
     TextView textView;
 
     public ShowListFragment() {
@@ -60,64 +59,27 @@ public class ShowListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_list, container, false);
-        initNetwork();
+        //initNetwork();
         initView();
         textView.setText("모든 작성글 보기");
         textView.setTypeface(font);
-        setNetwork();
+        //setNetwork();
+        Loader.allFoologNetwork(send_token, ShowListFragment.this);
 
         return view;
     }
 
     private void initView() {
         textView = (TextView) view.findViewById(R.id.textView);
-       // storage = context.getSharedPreferences("storage", Activity.MODE_PRIVATE);
-       // shared_token = storage.getString("inputToken", " ");
         send_token = SharedPreferencesDb.sendToken(context, "token");
         font = Typeface.createFromAsset(getActivity().getAssets(), "yaFontBold.ttf");
-
         recyclerView = view.findViewById(R.id.listRecyclerView);
     }
 
-    private void initNetwork(){
-        // okhttp log interceptor 사용
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(logging).build();
-
-        // 레트로핏 객체 정의
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://api.foolog.xyz/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
-
-        service = retrofit.create(NetworkService.class);
+    @Override
+    public void showAllList(List<AllList> allLists) {
+        adapter = new ListRecyclerViewAdapter(allLists, context);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
     }
-
-    private void setNetwork(){
-        Call<List<AllList>> call = service.getAllList(send_token);
-        call.enqueue(new Callback<List<AllList>>() {
-            @Override
-            public void onResponse(Call<List<AllList>> call, Response<List<AllList>> response) {
-                // 전송결과가 정상이면
-                Log.e("Write","in ====== onResponse");
-                if(response.isSuccessful()){
-                    List<AllList> allLists = response.body();
-                    adapter = new ListRecyclerViewAdapter(allLists, context);
-                    recyclerView.setAdapter(adapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                }else{
-                    int statusCode = response.code();
-                    Log.i("ShowListFragment", "응답코드 ============= " + statusCode);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<AllList>> call, Throwable t) {
-                Log.e("MyTag","error==========="+t.getMessage());
-            }
-        });
-    }
-
 }
