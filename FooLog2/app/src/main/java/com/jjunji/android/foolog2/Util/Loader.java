@@ -115,6 +115,9 @@ public class Loader {
 
     // 인자로 day(특정 한 날짜) -> 선택한 날짜에 해당하는 post Data
     public static void allFoologNetwork(String send_token, final ITask.createAllFoolog createAllFoolog){
+        logInterceptor();
+        initNetwork();
+
         Call<List<AllList>> call = service.getAllList(send_token);
         call.enqueue(new Callback<List<AllList>>() {
             @Override
@@ -124,7 +127,6 @@ public class Loader {
                 if(response.isSuccessful()){
                     List<AllList> allLists = response.body();
                     createAllFoolog.showAllList(allLists);
-
                 }else{
                     int statusCode = response.code();
                     Log.i("ShowListFragment", "응답코드 ============= " + statusCode);

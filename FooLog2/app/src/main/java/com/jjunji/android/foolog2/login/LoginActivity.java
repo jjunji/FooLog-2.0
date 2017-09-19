@@ -1,6 +1,11 @@
 package com.jjunji.android.foolog2.login;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +36,7 @@ LoginResult : 로그인 -> 토큰 생성 -> 토큰 저장용
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
+    private final int REQ_PERMISSION = 100;
     private EditText txtEmail, txtPassword;
     private Button btnLogin, btnSignUp;
     private Intent intent;
@@ -49,6 +55,43 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //setSharedPreferences(); // SharedPreferences 정의
         checkStorage();  // 저장된 키 값이 있는지 확인
         setOnClickListener(); // 버튼 클릭 이벤트 설정
+
+        // 마시멜로 이상버전에서만 런타임 권한체크
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkPermission();
+        }else {
+            init();
+        }
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void checkPermission(){
+        //1 권한체크 - 특정권한이 있는지 시스템에 물어본다
+        if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                && checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
+            init();
+        }else{
+            // 2. 권한이 없으면 사용자에 권한을 달라고 요청
+            String permissions[] = { Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    , Manifest.permission.CAMERA };
+            requestPermissions(permissions ,REQ_PERMISSION); // -> 권한을 요구하는 팝업이 사용자 화면에 노출된다
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == REQ_PERMISSION){
+            // 3.1 사용자가 승인을 했음
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED){
+                init();
+                // 3.2 사용자가 거절 했음
+            }else{
+                Toast.makeText(this, "권한요청을 승인하셔야 앱을 사용할 수 있습니다.", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void init() {
@@ -62,14 +105,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnLogin.setOnClickListener(this);
         btnSignUp.setOnClickListener(this);
     }
-
-/*    private void setSharedPreferences(){
-        //SharedPreferences storage = getSharedPreferences("storage", Activity.MODE_PRIVATE);
-        // 처음에는 SharedPreferences에 아무런 정보도 없으므로 값을 저장할 default 키를 생성한다.
-        // getString 의 첫번째 인자는 저장될 키, 두번째 인자는 값.
-        loginId = SharedPreferencesDb.getId(this, null);
-        loginPwd = SharedPreferencesDb.getPwd(this, null);
-    }*/
 
     // 저장된 키 값이 있다면 자동 로그인
     private void checkStorage() {

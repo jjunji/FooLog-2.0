@@ -66,8 +66,6 @@ public class CalendarFragment extends Fragment implements CustomRecyclerViewAdap
     int dayOfWeek;
     String start, end;
 
-    NetworkService service = null;
-
     private String send_token = "Token " + SharedPreferencesDb.getToken(context, "token");
 
     public CalendarFragment() {
