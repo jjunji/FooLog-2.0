@@ -29,7 +29,10 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".login.SignUpActivity" />
-        <activity android:name=".WriteActivity"></activity>
+        <activity
+            android:name=".WriteActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
     </application>
 
 </manifest>

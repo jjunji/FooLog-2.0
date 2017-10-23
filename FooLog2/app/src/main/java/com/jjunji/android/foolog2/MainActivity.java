@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity
     ActionBarDrawerToggle toggle;
     Toolbar toolbar;
     Context mContext = this;
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity
         setFragment();
         setAdapter();
         setNaviView();
+        setFab();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +76,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void initView(){
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         indicator = (TooltipIndicator) findViewById(R.id.tooltip_indicator);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -81,6 +84,16 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+    }
+
+    public void setFab(){
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, WriteActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @TargetApi(Build.VERSION_CODES.N)
