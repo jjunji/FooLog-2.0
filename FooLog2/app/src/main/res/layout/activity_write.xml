@@ -152,13 +152,56 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="1">
 
-            <RadioButton
-                android:id="@+id/radioButton"
-                android:layout_width="wrap_content"
+            <RadioGroup
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioBtn_kor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/checkbox_korea"
+                    android:button="@null" />
+
+                <RadioButton
+                    android:id="@+id/radioBtn_japan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/checkbox_japan"
+                    android:button="@null" />
+
+                <RadioButton
+                    android:id="@+id/radioBtn_ch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/checkbox_china"
+                    android:button="@null" />
+
+                <RadioButton
+                    android:id="@+id/radioBtn_usa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/checkbox_western"
+                    android:button="@null" />
+
+                <RadioButton
+                    android:id="@+id/radioBtn_etc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/checkbox_etc"
+                    android:button="@null" />
+
+            </RadioGroup>
+
         </LinearLayout>
 
         <LinearLayout
@@ -166,12 +209,35 @@
             android:layout_height="50dp"
             android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/radioButton2"
-                android:layout_width="wrap_content"
+            <RadioGroup
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="RadioButton" />
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/checkbox_good"
+                    android:button="@null" />
+
+                <RadioButton
+                    android:id="@+id/radioButton4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/checkbox_soso"
+                    android:button="@null" />
+
+                <RadioButton
+                    android:id="@+id/radioButton5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/checkbox_bad"
+                    android:button="@null" />
+            </RadioGroup>
         </LinearLayout>
 
         <ImageView
@@ -183,16 +249,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="1">
 
             <EditText
-                android:id="@+id/editText3"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_weight="1"
-                android:background="@null"
+                android:id="@+id/editText4"
+                android:layout_width="273dp"
+                android:layout_height="98dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.71"
                 android:ems="10"
-                android:inputType="text" />
+                android:gravity="center_horizontal"
+                android:background="@color/colorMemo"
+                android:inputType="text"
+                android:singleLine="false" />
         </LinearLayout>
 
     </LinearLayout>
